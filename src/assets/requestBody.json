@@ -1,0 +1,32 @@
+{
+  "messageSpeed": 22.6,
+  "workingHours": {
+    "start": "2023-10-02T05:00:00.000Z",
+    "end": "2023-10-02T23:50:00.000Z"
+  },
+  "totalVehicles": 4,
+  "numberOfDuties": 0,
+  "forwardTotalDistanceKm": 4.22,
+  "reverseTotalDistanceKm": 4.07,
+  "lunchTime": "2023-10-02T09:45:00.000Z",
+  "dinnerTime": "2023-10-02T19:16:00.000Z",
+  "lunchDuration": 40,
+  "dinnerDuration": 40,
+  "forwardParkingTime": 5,
+  "reverseParkingTime": 5,
+  "interval": 3,
+  "peakHourList": [
+    {
+      "start": "2023-10-02T06:15:00.000Z",
+      "end": "2023-10-02T09:30:00.000Z"
+    },
+    {
+      "start": "2023-10-02T16:50:00.000Z",
+      "end": "2023-10-02T19:10:00.000Z"
+    }
+  ],
+  "shiftingType": "ON_DUTY",
+  "startStation": "FORWARD",
+  "endStation": "FORWARD",
+  "lunchDestination": "FORWARD"
+}
