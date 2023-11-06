@@ -113,13 +113,14 @@
                 <VueDatePicker id="endWorkingTime" time-picker v-model="requestBody.endWorkingTime" :dark="darkMode()"/>
               </div>
 
-              <PeakHourComponent v-on:set-peak-hours="updatePeakHours" :darkMode="darkMode()"/>
+              <PeakHourComponent v-bind:parentListResult="requestBody.peakHourList"
+                                 v-on:set-peak-hours="updatePeakHours"
+                                 :darkMode="darkMode()"/>
 
               <v-card style="margin-top: 12px" elevation="6">
-<!--                <v-card-title style="font-size: medium" >Added peak hour:</v-card-title>-->
+                <!--                <v-card-title style="font-size: medium" >Added peak hour:</v-card-title>-->
                 <v-card-text v-for="ph in filteredItems()" :key="ph" v-if="checkPeakHourSize()">
-                  {{ ph.start.hours }}:{{ ph.start.minutes }} -
-                  {{ ph.end.hours }}:{{ ph.end.minutes }}
+                  {{ this.displayPeakHours(ph) }}
                 </v-card-text>
                 <v-card-text v-else>Час пик не добавлен.</v-card-text>
               </v-card>
@@ -232,7 +233,21 @@ export default {
       });
     },
 
-    checkPeakHourSize(){
+    displayPeakHours(ph) {
+      if (ph != null
+          && ph.start != null && ph.end != null
+          && ph.start.hours != null && ph.start.minutes != null
+          && ph.end.hours != null && ph.end.minutes != null
+      ) {
+        let startHours = ph.start.hours.toString().padStart(2, '0');
+        let startMinutes = ph.start.minutes.toString().padStart(2, '0');
+        let endHours = ph.end.hours.toString().padStart(2, '0');
+        let endMinutes = ph.end.minutes.toString().padStart(2, '0');
+        return startHours + ':' + startMinutes + ' ~ ' + endHours + ':' + endMinutes;
+      }
+      return '';
+    },
+    checkPeakHourSize() {
       return this.filteredItems().length > 0;
     },
 

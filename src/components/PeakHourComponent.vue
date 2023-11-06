@@ -11,12 +11,14 @@
           <v-row v-for="key in this.peakHoursList.length" :key="key">
             <v-col :cols="1"/>
             <v-col :cols="5">
-              <label style="font-size: small">Начало рабочего времени</label>
-              <VueDatePicker id="startWorkingTime" time-picker v-model="peakHoursList[key - 1].start" :dark="darkMode"/>
+              <label style="font-size: small">Час пик с</label>
+              <VueDatePicker required id="startWorkingTime" time-picker v-model="peakHoursList[key - 1].start"
+                             :dark="darkMode"/>
             </v-col>
             <v-col :cols="5">
-              <label style="font-size: small">Окончание рабочего времени</label>
-              <VueDatePicker id="endWorkingTime" time-picker v-model="peakHoursList[key - 1].end" :dark="darkMode"/>
+              <label style="font-size: small">Час пик до</label>
+              <VueDatePicker required id="endWorkingTime" time-picker v-model="peakHoursList[key - 1].end"
+                             :dark="darkMode"/>
             </v-col>
             <v-col :cols="1">
               <v-btn style="margin-top: 24px" variant="text" color="red" @click="removePeakTime(key - 1)">
@@ -39,6 +41,7 @@
           <v-spacer></v-spacer>
 
           <v-btn
+              :disabled="isRequiredFieldsMeet()"
               text="Сохранить и закрыть"
               @click="isActive.value = false;"
               v-on:click="setPeakHours"
@@ -51,12 +54,14 @@
 <script>
 
 import VueDatePicker from "@vuepic/vue-datepicker";
+import {ref} from "vue";
+import {timeUnits} from "@/router/shiftRequestBody";
 
 export default {
   components: {VueDatePicker},
   name: "Test",
   props: {
-    result: {
+    parentListResult: {
       default: [],
       type: Array
     },
@@ -66,29 +71,38 @@ export default {
     },
   },
   data: () => ({
-    peakHoursCount: 1,
-    startTime: [],
-    endTime: [],
-    peakHoursList: [
-      {
-        start: null,
-        end: null
-      }
-    ],
+    peakHoursList: [],
     peakHours: {
-      start: null,
-      end: null
+      start: ref(timeUnits()),
+      end: ref(timeUnits())
     }
 
   }),
   methods: {
     setPeakHours() {
+      this.filteredItems()
+      console.log("checking peak hours: " + JSON.stringify(this.peakHoursList))
       this.$emit('set-peak-hours', this.peakHoursList);
     },
     addPeakHours() {
-      let newValue = Object.create(this.peakHours)
+      let newValue = Object.assign({}, this.peakHours)
       this.peakHoursList.push(newValue);
     },
+    isRequiredFieldsMeet() {
+      for (let i = 0; i < this.peakHoursList; i++) {
+        if (this.peakHoursList[i].start == null || this.peakHoursList[i].end == null) {
+          return true;
+        }
+      }
+      return false;
+    },
+
+    filteredItems() {
+      this.peakHoursList = this.peakHoursList.filter(it => {
+        return it.start != null && it.start.hours != null || it.end != null && it.end.hour != null;
+      });
+    },
+
 
     removePeakTime(index) {
       let value = this.peakHoursList[index]
@@ -96,6 +110,10 @@ export default {
         return item !== value
       })
     }
+  },
+  watch() {
+    this.addPeakHours()
+    this.peakHoursList = this.parentListResult
   }
 }
 </script>

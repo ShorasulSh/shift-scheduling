@@ -1,3 +1,5 @@
+import {ref} from "vue";
+
 export function requestBody() {
     return {
         "messageSpeed": 19.9,
@@ -31,4 +33,12 @@ export function requestBody() {
         "endStation": "FORWARD",
         "lunchDestination": "FORWARD"
     }
+}
+
+export function timeUnits() {
+    return {
+        hours: ref(),
+        minutes: ref(),
+        seconds: ref()
+    };
 }
