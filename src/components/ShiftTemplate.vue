@@ -1,24 +1,25 @@
 <template>
   <v-table class="pa-3">
     <thead>
-<!--    <tr>-->
-<!--      <th class="text-left">-->
-<!--        Номер автобуса-->
-<!--      </th>-->
-<!--      <th class="text-left">-->
-<!--        Всего поездок-->
-<!--      </th>-->
+    <tr style="align-items: center; font-size: small">
+      <th class="text-left">
+        Номер автобуса
+      </th>
+      <th class="text-left">
+        Всего поездок
+      </th>
 
-<!--      <th class="text-center"-->
-<!--          v-for="x in response.maxSizeOfLine" :key="x">-->
-<!--        {{ x % 2 === 1 ? 'Вперед' : 'Обратно' }}-->
-<!--      </th>-->
+      <th class="text-center"
+          style="font-size: small; align-content: center"
+          v-for="x in response.maxSizeOfLine" :key="x">
+        {{ x % 2 === 1 ? 'Вперед' : 'Обратно' }}
+      </th>
 
 
-<!--    </tr>-->
+    </tr>
     </thead>
     <tbody>
-    <tr v-for="x in response.route" :key="x.busNumber" v-bind:class="getColor()">
+    <tr v-for="x in response.route" :key="x" v-bind:class="getColor()">
       <td>{{ x.busNumber }}</td>
       <td>{{ x.totalTripsByLine }}</td>
       <td v-for="line in x.line" :key="line">
@@ -48,7 +49,9 @@ export default {
   created () {
     this.readDataFromAPI()
   },
+  getters:{
 
+  },
   methods: {
     getColor() {
       this.rowCounter++;
@@ -62,14 +65,8 @@ export default {
           });
     },
   },
-  mounted() {
+  computed() {
     this.readDataFromAPI();
   },
 }
 </script>
-
-<style>
-.gray {
-  background-color: rgba(224, 222, 222, 0.25);
-}
-</style>

@@ -2,7 +2,7 @@
   <v-app>
     <default-bar />
 
-    <default-view />
+    <default-view style="margin-top: 24px" />
   </v-app>
 </template>
 
