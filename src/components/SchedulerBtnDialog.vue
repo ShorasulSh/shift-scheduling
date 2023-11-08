@@ -1,6 +1,6 @@
 <template>
-  <v-dialog
-      v-model="dialog"
+  <v-dialog width="1200"
+            v-model="dialog"
   >
     <template v-slot:activator="{ props }">
       <v-btn
@@ -11,9 +11,18 @@
       </v-btn>
     </template>
     <v-card>
-      <v-card-title>
+      <v-card-actions>
         <span class="text-h5">Создать шаблон</span>
-      </v-card-title>
+        <v-spacer/>
+        <v-btn
+            color="red"
+            variant="text"
+            @click="dialog = false"
+            append-icon="mdi-close"
+        >
+          Close
+        </v-btn>
+      </v-card-actions>
       <v-card-text>
         <v-container>
           <v-row>
@@ -47,7 +56,7 @@
               <v-text-field
                   label="Время обеда (в минутах)"
                   required
-                  v-model="requestBody.lunc"
+                  v-model="requestBody.lunchDuration"
                   type="number"
                   variant="outlined"
               ></v-text-field>
@@ -55,7 +64,7 @@
               <v-text-field
                   label="Время ужина (в минутах)"
                   required
-                  v-model="requestBody.reverseTotalDistanceKm"
+                  v-model="requestBody.dinnerDuration"
                   type="number"
                   variant="outlined"
               ></v-text-field>
@@ -84,7 +93,7 @@
 
               <v-combobox
                   variant="outlined"
-                  v-model="value"
+                  v-model="lunchDestination"
                   :items="items"
                   label="Направление на обед"
               ></v-combobox>
@@ -96,21 +105,14 @@
                 sm="6"
                 md="4"
             >
-              <!--              <v-dialog width="800">-->
-              <!--                <template v-slot:activator="{ props }">-->
-              <!--                  <v-btn v-bind="props" text="Добавить час пик"> </v-btn>-->
-              <!--                </template>-->
-
-              <!--                <template v-slot:default="{ isActive }">-->
-              <!--                  <v-card title="Dialog">-->
               <div class="flex flex-col gap-1">
                 <label style="font-size: small">Начало рабочего времени</label>
-                <VueDatePicker id="startWorkingTime" time-picker v-model="requestBody.startWorkingTime"
+                <VueDatePicker id="startWorkingTime" time-picker v-model="requestBody.workingHours.start"
                                :dark="darkMode()"/>
               </div>
               <div class="flex flex-col gap-1 mb-6">
                 <label style="font-size: small">Окончание рабочего времени</label>
-                <VueDatePicker id="endWorkingTime" time-picker v-model="requestBody.endWorkingTime" :dark="darkMode()"/>
+                <VueDatePicker id="endWorkingTime" time-picker v-model="requestBody.workingHours.end" :dark="darkMode()"/>
               </div>
 
               <PeakHourComponent v-bind:parentListResult="requestBody.peakHourList"
@@ -118,77 +120,25 @@
                                  :darkMode="darkMode()"/>
 
               <v-card style="margin-top: 12px" elevation="6">
-                <!--                <v-card-title style="font-size: medium" >Added peak hour:</v-card-title>-->
+                <v-card-title style="font-size: medium" v-if="checkPeakHourSize()">Час пик:</v-card-title>
                 <v-card-text v-for="ph in filteredItems()" :key="ph" v-if="checkPeakHourSize()">
                   {{ this.displayPeakHours(ph) }}
                 </v-card-text>
                 <v-card-text v-else>Час пик не добавлен.</v-card-text>
               </v-card>
 
-              <!--                    <v-card-actions>-->
-              <!--                      <v-spacer></v-spacer>-->
-
-              <!--                      <v-btn-->
-              <!--                          text="Close Dialog"-->
-              <!--                          @click="isActive.value = false"-->
-              <!--                      ></v-btn>-->
-              <!--                    </v-card-actions>-->
-              <!--                  </v-card>-->
-              <!--                </template>-->
-              <!--              </v-dialog>-->
-            </v-col>
-            <v-col cols="12">
-              <!--              <v-text-field-->
-              <!--                  label="Email*"-->
-              <!--                  required-->
-              <!--              ></v-text-field>-->
-            </v-col>
-            <v-col cols="12">
-              <!--              <v-text-field-->
-              <!--                  label="Password*"-->
-              <!--                  type="password"-->
-              <!--                  required-->
-              <!--              ></v-text-field>-->
-            </v-col>
-            <v-col
-                cols="12"
-                sm="6"
-            >
-              <!--              <v-select-->
-              <!--                  :items="['0-17', '18-29', '30-54', '54+']"-->
-              <!--                  label="Age*"-->
-              <!--                  required-->
-              <!--              ></v-select>-->
-            </v-col>
-            <v-col
-                cols="12"
-                sm="6"
-            >
-              <!--              <v-autocomplete-->
-              <!--                  :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"-->
-              <!--                  label="Interests"-->
-              <!--                  multiple-->
-              <!--              ></v-autocomplete>-->
             </v-col>
           </v-row>
         </v-container>
-        <!--        <small>*indicates required field</small>-->
       </v-card-text>
       <v-card-actions>
-        <v-spacer></v-spacer>
-        <!--        <v-btn-->
-        <!--            color="blue-darken-1"-->
-        <!--            variant="text"-->
-        <!--            @click="dialog = false"-->
-        <!--        >-->
-        <!--          Close-->
-        <!--        </v-btn>-->
         <v-btn
+            @click="postShiftTemplate()"
+            block=""
             color="blue-darken-1"
             variant="text"
-            @click="dialog = false; logging()"
-        >
-          Сохранить
+            prepend-icon="mdi-download">
+          Send to server
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -206,23 +156,25 @@ export default {
   data: () => ({
     requestBody: {
       peakHourList: [],
-      messageSpeed: ref(),
-      forwardTotalDistanceKm: ref(),
-      reverseTotalDistanceKm: ref(),
-      startWorkingTime: ref(),
-      endWorkingTime: ref(),
-      interval: ref(),
-      lunchDuration: ref(),
-      dinnerDuration: ref(),
-      forwardParkingTime: ref(),
-      reverseParkingTime: ref(),
+      messageSpeed: 19.9,
+      forwardTotalDistanceKm: 17.95,
+      reverseTotalDistanceKm: 18.28,
+      workingHours: {
+        start: ref(),
+        end: ref(),
+      },
+      interval: 8,
+      lunchDuration: 30,
+      dinnerDuration: 40,
+      forwardParkingTime: 5,
+      reverseParkingTime: 5,
     },
     dialog: false,
     time: null,
     menu2: false,
     modal2: false,
     items: ['Вперед', 'Назад'],
-    value: ref(),
+    lunchDestination: 'Вперед',
   }),
 
   methods: {
@@ -254,10 +206,12 @@ export default {
     updatePeakHours(updatedPeakHours) {
       this.requestBody.peakHourList = updatedPeakHours
     },
+
     darkMode() {
       return useTheme().global.name.value === 'dark';
     },
-    logging() {
+
+    postShiftTemplate() {
       console.log(JSON.stringify(this.requestBody))
     }
   },

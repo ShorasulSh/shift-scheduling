@@ -14,10 +14,9 @@
           v-for="x in response.maxSizeOfLine" :key="x">
         {{ x % 2 === 1 ? 'Вперед' : 'Обратно' }}
       </th>
-
-
     </tr>
     </thead>
+
     <tbody>
     <tr v-for="x in response.route" :key="x" v-bind:class="getColor()">
       <td>{{ x.busNumber }}</td>
@@ -62,6 +61,7 @@ export default {
           .post("http://localhost:8095/api/v1/shift/create", this.body)
           .then((response) => {
             this.response = response.data
+            console.log(this.response)
           });
     },
   },

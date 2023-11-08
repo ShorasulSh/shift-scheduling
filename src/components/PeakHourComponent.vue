@@ -76,18 +76,20 @@ export default {
       start: ref(timeUnits()),
       end: ref(timeUnits())
     }
-
   }),
+
   methods: {
+
     setPeakHours() {
       this.filteredItems()
-      console.log("checking peak hours: " + JSON.stringify(this.peakHoursList))
       this.$emit('set-peak-hours', this.peakHoursList);
     },
+
     addPeakHours() {
       let newValue = Object.assign({}, this.peakHours)
       this.peakHoursList.push(newValue);
     },
+
     isRequiredFieldsMeet() {
       for (let i = 0; i < this.peakHoursList; i++) {
         if (this.peakHoursList[i].start == null || this.peakHoursList[i].end == null) {
@@ -99,10 +101,10 @@ export default {
 
     filteredItems() {
       this.peakHoursList = this.peakHoursList.filter(it => {
-        return it.start != null && it.start.hours != null || it.end != null && it.end.hour != null;
+        return it.start != null && it.start.hours != null
+            || it.end != null && it.end.hour != null;
       });
     },
-
 
     removePeakTime(index) {
       let value = this.peakHoursList[index]

@@ -4,8 +4,14 @@ export function requestBody() {
     return {
         "messageSpeed": 19.9,
         "workingHours": {
-            "start": "2023-10-02T05:15:00.000Z",
-            "end": "2023-10-02T22:55:00.000Z"
+            "start": {
+                "hours": 5,
+                "minutes": 15,
+            },
+            "end": {
+                "hours": 22,
+                "minutes": 55,
+            },
         },
         "totalVehicles": 18,
         "numberOfDuties": 0,
@@ -20,12 +26,24 @@ export function requestBody() {
         "interval": 8,
         "peakHourList": [
             {
-                "start": "2023-10-02T07:00:00.000Z",
-                "end": "2023-10-02T09:30:00.000Z"
+                "start": {
+                    "hours": 7,
+                    "minutes": 0,
+                },
+                "end": {
+                    "hours": 9,
+                    "minutes": 30,
+                },
             },
             {
-                "start": "2023-10-02T17:00:00.000Z",
-                "end": "2023-10-02T19:00:00.000Z"
+                "start": {
+                    "hours": 17,
+                    "minutes": 0,
+                },
+                "end": {
+                    "hours": 19,
+                    "minutes": 0,
+                },
             }
         ],
         "shiftingType": "ON_DUTY",

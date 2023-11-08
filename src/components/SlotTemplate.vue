@@ -13,7 +13,7 @@
             :prepend-icon="timeSlot.type === 'LUNCH_TIME' ? 'mdi-pause' :
                            timeSlot.direction === 'FORWARD' ? 'mdi-skip-forward' : 'mdi-skip-backward'"
             variant="text"
-           >
+    >
 
       {{ this.timeRange(timeSlot) }}
     </v-chip>
@@ -28,19 +28,27 @@ export default {
   },
 
   methods: {
-    timeRange(timeSlot) {
-      let start = this.formatTime(timeSlot.start)
-      if (timeSlot.end != null) {
-        let end = this.formatTime(timeSlot.end)
-        return start + ' - ' + end;
-      }
-      return start;
-    },
+    timeRange(ts) {
+      let result = '';
 
-    formatTime(time) {
-      time = time.split('T')[1];
-      return time.substring(0, 5);
-    }
+      if (ts != null) {
+        if (ts.start != null && ts.start.hours != null && ts.start.minutes != null) {
+          let startHours = ts.start.hours.toString().padStart(2, '0');
+          let startMinutes = ts.start.minutes.toString().padStart(2, '0');
+          result += startHours + ':' + startMinutes;
+        }
+
+        result += ' ~ ';
+
+        if (ts.end != null && ts.end.hours != null && ts.end.minutes != null) {
+          let endHours = ts.end.hours.toString().padStart(2, '0');
+          let endMinutes = ts.end.minutes.toString().padStart(2, '0');
+          result += endHours + ':' + endMinutes;
+        }
+        return result;
+      }
+      return 'not available';
+    },
   }
 }
 </script>
