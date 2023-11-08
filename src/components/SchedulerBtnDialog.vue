@@ -151,25 +151,24 @@ import VueDatePicker from "@vuepic/vue-datepicker";
 import PeakHourComponent from "@/components/PeakHourComponent.vue";
 import {useTheme} from "vuetify";
 import {ref} from 'vue';
-import axios from "axios";
 
 export default {
   components: {VueDatePicker, PeakHourComponent},
   data: () => ({
     requestBody: {
       peakHourList: [],
-      messageSpeed: 19.9,
-      forwardTotalDistanceKm: 17.95,
-      reverseTotalDistanceKm: 18.28,
+      messageSpeed: ref(),
+      forwardTotalDistanceKm: ref(),
+      reverseTotalDistanceKm: ref(),
       workingHours: {
         start: ref(),
         end: ref(),
       },
-      interval: 8,
-      lunchDuration: 30,
-      dinnerDuration: 40,
-      forwardParkingTime: 5,
-      reverseParkingTime: 5,
+      interval: ref(),
+      lunchDuration: ref(),
+      dinnerDuration: ref(),
+      forwardParkingTime: ref(),
+      reverseParkingTime: ref(),
       lunchDestination: 'FORWARD',
       startStation: 'FORWARD',
     },

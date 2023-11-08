@@ -45,9 +45,6 @@ export default {
     }
   },
 
-  // created () {
-  //   this.readDataFromAPI()
-  // },
   mounted() {
     window.addEventListener('requestBody-localstorage-changed', (event) => {
       axios
