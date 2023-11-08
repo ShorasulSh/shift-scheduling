@@ -93,8 +93,8 @@
 
               <v-combobox
                   variant="outlined"
-                  v-model="lunchDestination"
-                  :items="items"
+                  v-model="requestBody.lunchDestination"
+                  :items="directions"
                   label="Направление на обед"
               ></v-combobox>
 
@@ -112,7 +112,8 @@
               </div>
               <div class="flex flex-col gap-1 mb-6">
                 <label style="font-size: small">Окончание рабочего времени</label>
-                <VueDatePicker id="endWorkingTime" time-picker v-model="requestBody.workingHours.end" :dark="darkMode()"/>
+                <VueDatePicker id="endWorkingTime" time-picker v-model="requestBody.workingHours.end"
+                               :dark="darkMode()"/>
               </div>
 
               <PeakHourComponent v-bind:parentListResult="requestBody.peakHourList"
@@ -132,13 +133,13 @@
         </v-container>
       </v-card-text>
       <v-card-actions>
+        <v-spacer/>
         <v-btn
-            @click="postShiftTemplate()"
-            block=""
+            @click="saveRequestBody(); dialog = false"
             color="blue-darken-1"
             variant="text"
             prepend-icon="mdi-download">
-          Send to server
+          Применять
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -150,6 +151,7 @@ import VueDatePicker from "@vuepic/vue-datepicker";
 import PeakHourComponent from "@/components/PeakHourComponent.vue";
 import {useTheme} from "vuetify";
 import {ref} from 'vue';
+import axios from "axios";
 
 export default {
   components: {VueDatePicker, PeakHourComponent},
@@ -168,16 +170,22 @@ export default {
       dinnerDuration: 40,
       forwardParkingTime: 5,
       reverseParkingTime: 5,
+      lunchDestination: 'FORWARD',
+      startStation: 'FORWARD',
     },
     dialog: false,
-    time: null,
-    menu2: false,
-    modal2: false,
-    items: ['Вперед', 'Назад'],
-    lunchDestination: 'Вперед',
+    directions: ['FORWARD', 'BACKWARD'],
   }),
 
   methods: {
+    saveRequestBody() {
+      localStorage.setItem("requestBody", JSON.stringify(this.requestBody));
+      window.dispatchEvent(new CustomEvent('requestBody-localstorage-changed', {
+        detail: {
+          storage: this.requestBody
+        }
+      }));
+    },
 
     filteredItems() {
       return this.requestBody.peakHourList.filter(function (it) {
@@ -210,10 +218,6 @@ export default {
     darkMode() {
       return useTheme().global.name.value === 'dark';
     },
-
-    postShiftTemplate() {
-      console.log(JSON.stringify(this.requestBody))
-    }
   },
   watch() {
     this.checkPeakHourSize()

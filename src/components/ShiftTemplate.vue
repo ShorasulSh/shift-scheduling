@@ -20,7 +20,7 @@
     <tbody>
     <tr v-for="x in response.route" :key="x" v-bind:class="getColor()">
       <td>{{ x.busNumber }}</td>
-      <td>{{ x.totalTripsByLine }}</td>
+      <td>{{ x.totalTripsByLine - 1 }}</td>
       <td v-for="line in x.line" :key="line">
         <SlotTemplate v-bind:timeSlot="line"/>
       </td>
@@ -45,28 +45,24 @@ export default {
     }
   },
 
-  created () {
-    this.readDataFromAPI()
-  },
-  getters:{
-
+  // created () {
+  //   this.readDataFromAPI()
+  // },
+  mounted() {
+    window.addEventListener('requestBody-localstorage-changed', (event) => {
+      axios
+          .post("http://localhost:8095/api/v1/shift/create", event.detail.storage)
+          .then((response) => {
+            this.response = response.data
+            console.log(this.response)
+          });
+    });
   },
   methods: {
     getColor() {
       this.rowCounter++;
       if (this.rowCounter % 2 !== 0) return 'gray';
     },
-    readDataFromAPI() {
-      axios
-          .post("http://localhost:8095/api/v1/shift/create", this.body)
-          .then((response) => {
-            this.response = response.data
-            console.log(this.response)
-          });
-    },
-  },
-  computed() {
-    this.readDataFromAPI();
   },
 }
 </script>
