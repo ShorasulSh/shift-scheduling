@@ -1,13 +1,13 @@
 <script setup>
 
 
-import PeakHourComponent from "@/components/PeakHourComponent.vue";
+import TabShiftScheduling from "@/components/TabShiftScheduling.vue";
 </script>
 
 
 <template>
   <div class="">
-    <PeakHourComponent/>
+    <TabShiftScheduling/>
   </div>
 </template>
 
