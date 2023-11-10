@@ -9,11 +9,11 @@
         Всего поездок
       </th>
 
-            <th class="text-center"
-                style="font-size: small; align-content: center"
-                v-for="x in response.maxSizeOfLine" :key="x">
-              {{ this.direction === 'FORWARD' ? 'Вперед' : 'Обратно' }}
-            </th>
+      <th class="text-center"
+          style="font-size: small; align-content: center"
+          v-for="x in response.maxSizeOfLine" :key="x">
+        {{ this.direction === 'FORWARD' ? 'Вперед' : 'Обратно' }}
+      </th>
     </tr>
     </thead>
 
@@ -60,7 +60,6 @@ export default {
   },
 
   created() {
-    this.readDataFromAPI();
     this.body = requestBody();
 
     axios
@@ -76,14 +75,7 @@ export default {
       this.rowCounter++;
       if (this.rowCounter % 2 !== 0) return 'gray';
     },
-    readDataFromAPI() {
-      axios
-          .post("http://localhost:8095/api/v1/shift/create", this.body)
-          .then((response) => {
-            this.response = response.data
-            console.log(this.response)
-          });
-    },
+
   },
 
 }

@@ -10,8 +10,7 @@
             :append-icon="timeSlot.type === 'START' ? 'mdi-clock-start' :
                           timeSlot.type === 'END' ? 'mdi-clock-end' :
                           timeSlot.type === 'LUNCH_TIME' ? 'mdi-food' : ''"
-            :prepend-icon="timeSlot.type === 'LUNCH_TIME' ? 'mdi-pause' :
-                           timeSlot.direction === 'FORWARD' ? 'mdi-skip-forward' : 'mdi-skip-backward'"
+            :prepend-icon="timeSlot.direction === 'FORWARD' ? 'mdi-skip-forward' : 'mdi-skip-backward'"
             variant="text"
     >
 
