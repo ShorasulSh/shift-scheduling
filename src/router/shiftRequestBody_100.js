@@ -3,24 +3,24 @@ import {ref} from "vue";
 // 115 route
 export function requestBody() {
     return {
-        "messageSpeed": 19.9,
+        "messageSpeed": 20.5,
         "workingHours": {
             "start": {
                 "hours": 5,
-                "minutes": 15,
+                "minutes": 30,
             },
             "end": {
                 "hours": 22,
-                "minutes": 55,
+                "minutes": 6,
             },
         },
-        "forwardTotalDistanceKm": 17.95,
-        "reverseTotalDistanceKm": 18.28,
+        "forwardTotalDistanceKm": 18.50,
+        "reverseTotalDistanceKm": 17.73,
         "lunchDuration": 30,
         "dinnerDuration": 30,
         "forwardParkingTime": 5,
         "reverseParkingTime": 5,
-        "interval": 8,
+        "interval": 9,
         "peakHourList": [
             {
                 "start": {

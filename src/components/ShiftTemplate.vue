@@ -33,7 +33,7 @@
 
 import axios from "axios";
 import SlotTemplate from "@/components/SlotTemplate.vue";
-import {requestBody} from "@/router/shiftRequestBody";
+import {requestBody} from "@/router/shiftRequestBody_51";
 
 export default {
   components: {SlotTemplate},
@@ -44,6 +44,17 @@ export default {
       rowCounter: 0
     }
   },
+
+  // created() {
+  //   this.body = requestBody();
+  //
+  //   axios
+  //       .post("http://localhost:8095/api/v1/shift/create", requestBody())
+  //       .then((response) => {
+  //         this.response = response.data
+  //         console.log(this.response)
+  //       });
+  // },
 
   mounted() {
     window.addEventListener('requestBody-localstorage-changed', (event) => {

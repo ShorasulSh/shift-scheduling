@@ -33,7 +33,7 @@
 
 import axios from "axios";
 import SlotTemplate from "@/components/SlotTemplate.vue";
-import {requestBody} from "@/router/shiftRequestBody";
+import {requestBody} from "@/router/shiftRequestBody_51";
 
 export default {
   components: {SlotTemplate},

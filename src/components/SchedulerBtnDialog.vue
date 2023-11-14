@@ -133,12 +133,19 @@
         </v-container>
       </v-card-text>
       <v-card-actions>
+        <v-btn
+            @click="downloadWithAxios('tutorials.xlsx')"
+            color="blue-darken-1"
+            variant="text"
+            prepend-icon="mdi-download">
+          Export Shift
+        </v-btn>
         <v-spacer/>
         <v-btn
             @click="saveRequestBody(); dialog = false"
             color="blue-darken-1"
             variant="text"
-            prepend-icon="mdi-download">
+            prepend-icon="mdi-okay">
           Применять
         </v-btn>
       </v-card-actions>
@@ -151,6 +158,8 @@ import VueDatePicker from "@vuepic/vue-datepicker";
 import PeakHourComponent from "@/components/PeakHourComponent.vue";
 import {useTheme} from "vuetify";
 import {ref} from 'vue';
+import {requestBody} from "@/router/shiftRequestBody_51";
+import axios from "axios";
 
 export default {
   components: {VueDatePicker, PeakHourComponent},
@@ -176,7 +185,51 @@ export default {
     directions: ['FORWARD', 'BACKWARD'],
   }),
 
+  created() {
+    this.requestBody = requestBody()
+  },
+
   methods: {
+
+    downloadFile() {
+      axios({
+        url: "http://localhost:8095/api/v1/shift/download",
+        method: 'POST',
+        data: requestBody(),
+        responseType: 'application/vnd.ms-excel'
+      }).then((res) => {
+        var FILE = window.URL.createObjectURL(new Blob([res.data]));
+        var docUrl = document.createElement('x');
+        docUrl.href = FILE;
+        docUrl.setAttribute('download', 'tutorials.xlsx');
+        document.body.appendChild(docUrl);
+        docUrl.click();
+      });
+    },
+
+    forceFileDownload(response, title) {
+      console.log(title)
+      const url = window.URL.createObjectURL(new Blob([response.data]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', title)
+      document.body.appendChild(link)
+      link.click()
+    },
+
+    downloadWithAxios(title) {
+      axios({
+        method: 'post',
+        url: "http://localhost:8095/api/v1/shift/download",
+        data: requestBody(),
+        responseType: 'arraybuffer',
+      })
+          .then((response) => {
+            this.forceFileDownload(response, title)
+          })
+          .catch(() => console.log('error occured'))
+    },
+
     saveRequestBody() {
       localStorage.setItem("requestBody", JSON.stringify(this.requestBody));
       window.dispatchEvent(new CustomEvent('requestBody-localstorage-changed', {
