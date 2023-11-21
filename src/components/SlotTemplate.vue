@@ -1,5 +1,5 @@
 <template>
-  <div class="text-center">
+  <div class="">
 
     <v-chip size="large"
             class="px-6"

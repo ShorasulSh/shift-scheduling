@@ -2,7 +2,7 @@ import {ref} from "vue";
 
 export function requestBody() {
     return {
-        "messageSpeed": 21.0,
+        "messageSpeed": 21.3,
         "workingHours": {
             "start": {
                 "hours": 5,
@@ -10,16 +10,16 @@ export function requestBody() {
             },
             "end": {
                 "hours": 23,
-                "minutes": 55,
+                "minutes": 30,
             },
         },
-        "forwardTotalDistanceKm": 12.97,
-        "reverseTotalDistanceKm": 14,
+        "forwardTotalDistanceKm": 9.33,
+        "reverseTotalDistanceKm": 7,
         "lunchDuration": 30,
         "dinnerDuration": 30,
         "forwardParkingTime": 5,
         "reverseParkingTime": 5,
-        "interval": 7,
+        "interval": 8,
         "peakHourList": [
             {
                 "start": {
@@ -42,9 +42,10 @@ export function requestBody() {
                 },
             }
         ],
-        "startStation": "BOTH",
-        "lunchDestination": "FORWARD",
-        "vehiclesOnOppositeDir": 4
+        "shiftingType": "ON_DUTY",
+        "startStation": "FORWARD",
+        "endStation": "FORWARD",
+        "lunchDestination": "FORWARD"
     }
 }
 

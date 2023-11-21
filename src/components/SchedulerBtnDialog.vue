@@ -98,6 +98,30 @@
                   label="Направление на обед"
               ></v-combobox>
 
+              <v-combobox
+                  variant="outlined"
+                  v-model="selectedDirType"
+                  :items="directionType"
+                  label="Направление маршрута"
+              ></v-combobox>
+
+              <div class="" v-if="selectedDirType === 'ONE_DIRECTION'">
+                <v-combobox
+                    variant="outlined"
+                    v-model="selectedDirType"
+                    :items="directionType"
+                    label="Начальное направление маршрута"
+                ></v-combobox>
+              </div>
+
+              <div class="" v-if="selectedDirType === 'DOUBLE_DIRECTION'">
+                <v-combobox
+                    variant="outlined"
+                    v-model="selectedDirType"
+                    :items="directionType"
+                    label="К-во авто в противоположном направлении"
+                ></v-combobox>
+              </div>
             </v-col>
             <v-col
                 style="margin-top: -20px"
@@ -134,7 +158,7 @@
       </v-card-text>
       <v-card-actions>
         <v-btn
-            @click="downloadWithAxios('tutorials.xlsx')"
+            @click="downloadWithAxios()"
             color="blue-darken-1"
             variant="text"
             prepend-icon="mdi-download">
@@ -158,12 +182,14 @@ import VueDatePicker from "@vuepic/vue-datepicker";
 import PeakHourComponent from "@/components/PeakHourComponent.vue";
 import {useTheme} from "vuetify";
 import {ref} from 'vue';
-import {requestBody} from "@/router/shiftRequestBody_51";
+import {requestBody} from "@/router/shiftRequestBody_12";
 import axios from "axios";
 
 export default {
   components: {VueDatePicker, PeakHourComponent},
   data: () => ({
+    directionType: ['ONE_DIRECTION', 'DOUBLE_DIRECTION'],
+    selectedDirType: '',
     requestBody: {
       peakHourList: [],
       messageSpeed: ref(),
@@ -179,10 +205,12 @@ export default {
       forwardParkingTime: ref(),
       reverseParkingTime: ref(),
       lunchDestination: 'FORWARD',
-      startStation: 'FORWARD',
+      startStation: 'REVERSE',
+      routeDirection: 'FORWARD',
+      vehiclesOnOppositeDir: 2
     },
     dialog: false,
-    directions: ['FORWARD', 'BACKWARD'],
+    directions: ['FORWARD', 'REVERSE'],
   }),
 
   created() {
@@ -190,22 +218,6 @@ export default {
   },
 
   methods: {
-
-    downloadFile() {
-      axios({
-        url: "http://localhost:8095/api/v1/shift/download",
-        method: 'POST',
-        data: requestBody(),
-        responseType: 'application/vnd.ms-excel'
-      }).then((res) => {
-        var FILE = window.URL.createObjectURL(new Blob([res.data]));
-        var docUrl = document.createElement('x');
-        docUrl.href = FILE;
-        docUrl.setAttribute('download', 'tutorials.xlsx');
-        document.body.appendChild(docUrl);
-        docUrl.click();
-      });
-    },
 
     forceFileDownload(response, title) {
       console.log(title)
@@ -217,7 +229,7 @@ export default {
       link.click()
     },
 
-    downloadWithAxios(title) {
+    downloadWithAxios() {
       axios({
         method: 'post',
         url: "http://localhost:8095/api/v1/shift/download",
@@ -225,7 +237,7 @@ export default {
         responseType: 'arraybuffer',
       })
           .then((response) => {
-            this.forceFileDownload(response, title)
+            this.forceFileDownload(response, requestBody().routeName + '.xlsx')
           })
           .catch(() => console.log('error occured'))
     },

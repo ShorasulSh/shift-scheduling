@@ -18,11 +18,11 @@
     </thead>
 
     <tbody>
-    <tr v-for="x in response.route" :key="x" v-bind:class="getColor()">
-      <td>{{ x.busNumber }}</td>
-      <td>{{ x.totalTripsByLine - 1 }}</td>
-      <td v-for="line in x.line" :key="line">
-        <SlotTemplate v-bind:timeSlot="line"/>
+    <tr v-for="line in response.lines" :key="line" v-bind:class="getColor()">
+      <td>{{ line.busNumber }}</td>
+      <td>{{ line.totalTripsByLine - 1 }}</td>
+      <td v-for="slot in line.slots" :key="slot">
+        <SlotTemplate v-bind:timeSlot="slot"/>
       </td>
     </tr>
     </tbody>
