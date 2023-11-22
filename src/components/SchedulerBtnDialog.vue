@@ -170,7 +170,7 @@
             color="blue-darken-1"
             variant="text"
             prepend-icon="mdi-okay">
-          Применять
+          Apply
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -230,6 +230,8 @@ export default {
     },
 
     downloadWithAxios() {
+      const date = new Date(Date.now()).toLocaleString()
+
       axios({
         method: 'post',
         url: "http://localhost:8095/api/v1/shift/download",
@@ -237,7 +239,7 @@ export default {
         responseType: 'arraybuffer',
       })
           .then((response) => {
-            this.forceFileDownload(response, requestBody().routeName + '.xlsx')
+            this.forceFileDownload(response, requestBody().routeName + '  ' + date + '.xlsx')
           })
           .catch(() => console.log('error occured'))
     },

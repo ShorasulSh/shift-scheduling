@@ -42,9 +42,11 @@ export function requestBody() {
                 },
             }
         ],
-        "startStation": "BOTH",
+        "startStation": "FORWARD",
         "lunchDestination": "FORWARD",
-        "vehiclesOnOppositeDir": 4
+        "dinnerDestination": "FORWARD",
+        "vehiclesOnOppositeDir": 0,
+        "routeName": "Маршрут №51"
     }
 }
 
