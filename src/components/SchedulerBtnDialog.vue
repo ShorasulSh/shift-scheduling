@@ -182,7 +182,7 @@ import VueDatePicker from "@vuepic/vue-datepicker";
 import PeakHourComponent from "@/components/PeakHourComponent.vue";
 import {useTheme} from "vuetify";
 import {ref} from 'vue';
-import {requestBody} from "@/router/shiftRequestBody_12";
+import {requestBody} from "@/router/shiftRequestBody_100";
 import axios from "axios";
 
 export default {

@@ -43,10 +43,12 @@ export function requestBody() {
                 },
             }
         ],
-        "shiftingType": "ON_DUTY",
         "startStation": "FORWARD",
-        "endStation": "FORWARD",
-        "lunchDestination": "FORWARD"
+        "lunchDestination": "FORWARD",
+        "dinnerDestination": "FORWARD",
+        "vehiclesOnOppositeDir": 4,
+        "routeName": "Маршрут №100"
+
     }
 }
 

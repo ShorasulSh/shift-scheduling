@@ -45,7 +45,10 @@ export function requestBody() {
         "shiftingType": "ON_DUTY",
         "startStation": "FORWARD",
         "endStation": "FORWARD",
-        "lunchDestination": "FORWARD"
+        "lunchDestination": "FORWARD",
+        "dinnerDestination": "FORWARD",
+        "vehiclesOnOppositeDir": 5,
+        "routeName": "Маршрут №109"
     }
 }
 
